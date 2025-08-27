@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs').promises;
+const path = require('path');
 
 // Configuration
 const MAX_PRICE = 10000; // 10,000 KES
@@ -413,6 +414,7 @@ async function generateHTMLReport(data) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kenyan Electronics Deals Under 10,000 KES</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
