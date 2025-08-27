@@ -558,6 +558,12 @@ async function generateHTMLReport(data) {
             background: #4361ee;
             color: white;
             box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .search-group {
@@ -882,6 +888,18 @@ async function generateHTMLReport(data) {
                     categoryButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
+                    // Add visual feedback
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    
+                    // Reset after animation
+                    setTimeout(() => {
+                        if (this.classList.contains('active')) {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 4px 8px rgba(67, 97, 238, 0.3)';
+                        }
+                    }, 100);
+                    
                     // Update filter
                     currentFilters.category = this.dataset.filter;
                     applyFilters();
@@ -895,6 +913,18 @@ async function generateHTMLReport(data) {
                     // Update active button
                     priceButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+                    
+                    // Add visual feedback
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    
+                    // Reset after animation
+                    setTimeout(() => {
+                        if (this.classList.contains('active')) {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 4px 8px rgba(67, 97, 238, 0.3)';
+                        }
+                    }, 100);
                     
                     // Update filter
                     currentFilters.priceRange = this.dataset.filter;
@@ -910,6 +940,18 @@ async function generateHTMLReport(data) {
                     shopButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
+                    // Add visual feedback
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    
+                    // Reset after animation
+                    setTimeout(() => {
+                        if (this.classList.contains('active')) {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 4px 8px rgba(67, 97, 238, 0.3)';
+                        }
+                    }, 100);
+                    
                     // Update filter
                     currentFilters.shop = this.dataset.filter;
                     applyFilters();
@@ -923,6 +965,18 @@ async function generateHTMLReport(data) {
                     // Update active button
                     discountButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+                    
+                    // Add visual feedback
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    
+                    // Reset after animation
+                    setTimeout(() => {
+                        if (this.classList.contains('active')) {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 4px 8px rgba(67, 97, 238, 0.3)';
+                        }
+                    }, 100);
                     
                     // Update filter
                     currentFilters.discount = this.dataset.filter;
