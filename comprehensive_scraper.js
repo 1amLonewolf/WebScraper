@@ -347,7 +347,7 @@ async function saveResults(results) {
  */
 async function generateHTMLReport(data) {
   // Escape JSON data for use in HTML
-  const escapedData = JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+  const escapedData = JSON.stringify(data).replace(/</g, '\u003c').replace(/>/g, '\u003e');
   
   const htmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -355,122 +355,371 @@ async function generateHTMLReport(data) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kenyan Electronics Deals Under 10,000 KES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
         }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #ff6b6b, #ffa502, #ff6b6b);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
         h1 {
-            color: #333;
-            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
         }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
         .summary {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            text-align: center;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-top: 5px solid #4361ee;
         }
+        
+        .summary-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4361ee;
+        }
+        
+        .summary-label {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .last-updated {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 12px 25px;
+            background: white;
+            border: 2px solid #4361ee;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #4361ee;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .filter-btn:hover {
+            background: #4361ee;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .filter-btn.active {
+            background: #4361ee;
+            color: white;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+        
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
         }
+        
         .product {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-image-container {
+            height: 220px;
+            overflow: hidden;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             transition: transform 0.3s ease;
         }
-        .product:hover {
-            transform: translateY(-5px);
+        
+        .product:hover .product-image {
+            transform: scale(1.05);
         }
+        
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .product-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .category {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            align-self: flex-start;
+        }
+        
+        .laptop {
+            background: linear-gradient(90deg, #7209b7, #560bad);
+            color: white;
+        }
+        
+        .phone {
+            background: linear-gradient(90deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+        
         .product h3 {
-            margin-top: 0;
-            color: #333;
-            font-size: 1.1em;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #222;
+            flex-grow: 1;
         }
+        
+        .shop {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .price-container {
+            margin-bottom: 20px;
+        }
+        
         .price {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #e74c3c;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff6b6b;
         }
+        
         .original-price {
             text-decoration: line-through;
             color: #999;
             margin-right: 10px;
+            font-size: 1.1rem;
         }
+        
         .discount {
-            background-color: #e74c3c;
+            background: linear-gradient(90deg, #f72585, #b5179e);
             color: white;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 0.9em;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
         }
-        .shop {
-            color: #7f8c8d;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-        .category {
-            display: inline-block;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 0.8em;
-            margin-bottom: 10px;
-        }
-        .laptop { background-color: #9b59b6; }
-        .phone { background-color: #2ecc71; }
+        
         .url {
             display: inline-block;
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #3498db;
+            padding: 12px 20px;
+            background: linear-gradient(90deg, #4361ee, #3a0ca3);
             color: white;
             text-decoration: none;
-            border-radius: 3px;
-            font-size: 0.9em;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: auto;
         }
+        
         .url:hover {
-            background-color: #2980b9;
+            background: linear-gradient(90deg, #3a0ca3, #4361ee);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
         }
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            background-color: #f8f8f8;
-            border-radius: 3px;
-            margin-bottom: 10px;
+        
+        .loading {
+            text-align: center;
+            font-size: 1.5rem;
+            padding: 50px;
+            color: #4361ee;
+            font-weight: 500;
         }
-        .no-image {
-            width: 100%;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f8f8f8;
-            border-radius: 3px;
-            margin-bottom: 10px;
-            color: #999;
+        
+        .loading::after {
+            content: ".";
+            animation: dots 1.5s infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: "."; }
+            40% { content: ".."; }
+            60%, 100% { content: "..."; }
+        }
+        
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .summary {
+                flex-direction: column;
+            }
+            
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Kenyan Electronics Deals Under 10,000 KES</h1>
-    
-    <div class="summary">
-        <p>Last updated: <span id="timestamp">Loading...</span></p>
-        <p>Total deals found: <span id="total-deals">0</span></p>
-    </div>
-    
-    <div class="products" id="products-container">
-        <!-- Products will be inserted here -->
+    <div class="container">
+        <header>
+            <h1>🔥 Kenyan Electronics Deals 🔥</h1>
+            <p class="subtitle">Daily updated flash sales and special offers for phones and laptops under 10,000 KES</p>
+        </header>
+        
+        <div class="summary">
+            <div class="summary-item">
+                <div class="summary-value" id="total-deals">0</div>
+                <div class="summary-label">Total Deals</div>
+                <div class="last-updated">Last updated: <span id="timestamp">Loading...</span></div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value" id="laptop-deals">0</div>
+                <div class="summary-label">Laptop Deals</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value" id="phone-deals">0</div>
+                <div class="summary-label">Phone Deals</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="filter-btn active" data-filter="all">All Deals</button>
+            <button class="filter-btn" data-filter="laptop">Laptops</button>
+            <button class="filter-btn" data-filter="phone">Phones</button>
+        </div>
+        
+        <div id="loading" class="loading">Loading amazing deals</div>
+        <div id="error" class="error-message" style="display: none;"></div>
+        <div class="products" id="products-container">
+            <!-- Products will be inserted here -->
+        </div>
+        
+        <footer>
+            <p>Data refreshed daily • Last scrape: <span id="footer-timestamp">Loading...</span></p>
+            <p>Deals from Jumia Kenya and other Kenyan online shops</p>
+        </footer>
     </div>
 
     <script>
@@ -479,61 +728,146 @@ async function generateHTMLReport(data) {
         
         // Format timestamp for display
         function formatTimestamp(timestamp) {
-            const date = new Date(timestamp);
-            return date.toLocaleString('en-KE', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleString('en-KE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                console.error('Error formatting timestamp:', e);
+                return 'Unknown';
+            }
+        }
+        
+        // Calculate statistics
+        function calculateStats(items) {
+            const laptopDeals = items.filter(item => item.category === 'laptop').length;
+            const phoneDeals = items.filter(item => item.category === 'phone').length;
+            
+            // Calculate average discount
+            let totalDiscount = 0;
+            let discountCount = 0;
+            
+            items.forEach(item => {
+                if (item.discount && item.discount !== '') {
+                    const discountValue = parseInt(item.discount);
+                    if (!isNaN(discountValue)) {
+                        totalDiscount += discountValue;
+                        discountCount++;
+                    }
+                }
             });
+            
+            const avgDiscount = discountCount > 0 ? Math.round(totalDiscount / discountCount) : 0;
+            
+            return {
+                laptopDeals,
+                phoneDeals,
+                avgDiscount
+            };
         }
         
         // Display the data
         document.addEventListener('DOMContentLoaded', function() {
-            // Update summary information
-            document.getElementById('timestamp').textContent = formatTimestamp(data.timestamp);
-            document.getElementById('total-deals').textContent = data.totalItems;
-            
-            // Display products
-            const container = document.getElementById('products-container');
-            
-            data.items.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
+            try {
+                // Hide loading message
+                document.getElementById('loading').style.display = 'none';
                 
-                // Create image element
-                let imageElement = '';
-                if (product.imageUrl) {
-                    imageElement = '<img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.parentElement.innerHTML=\\'<div class=\\\\\\'no-image\\\\\\'>No image available</div>\\'+this.parentElement.innerHTML; this.remove();">';
-                } else {
-                    imageElement = '<div class="no-image">No image available</div>';
+                // Update summary information
+                document.getElementById('timestamp').textContent = formatTimestamp(data.timestamp);
+                document.getElementById('footer-timestamp').textContent = formatTimestamp(data.timestamp);
+                document.getElementById('total-deals').textContent = data.totalItems;
+                
+                // Calculate and display stats
+                const stats = calculateStats(data.items);
+                document.getElementById('laptop-deals').textContent = stats.laptopDeals;
+                document.getElementById('phone-deals').textContent = stats.phoneDeals;
+                
+                // Display products
+                const container = document.getElementById('products-container');
+                
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = '<p class="error-message">No deals found.</p>';
+                    return;
                 }
                 
-                let productHTML = imageElement +
-                    '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
-                    '<h3>' + product.name + '</h3>' +
-                    '<div>' +
-                    '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
+                data.items.forEach(product => {
+                    try {
+                        const productDiv = document.createElement('div');
+                        productDiv.className = 'product';
+                        productDiv.dataset.category = product.category;
+                        
+                        // Create image element
+                        let imageElement = '';
+                        if (product.imageUrl) {
+                            imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.parentElement.innerHTML='<div class=\\\\'no-image\\\\'>No image available</div>';"></div>';
+                        } else {
+                            imageElement = '<div class="product-image-container"><div class="no-image">No image available</div></div>';
+                        }
+                        
+                        let productHTML = imageElement +
+                            '<div class="product-content">' +
+                            '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
+                            '<h3>' + product.name + '</h3>' +
+                            '<div class="shop">Shop: ' + product.shop + '</div>' +
+                            '<div class="price-container">' +
+                            '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
+                        
+                        if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                            productHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
+                        }
+                        
+                        if (product.discount) {
+                            productHTML += '<span class="discount">' + product.discount + ' off</span>';
+                        }
+                        
+                        productHTML += '</div>';
+                        
+                        if (product.url) {
+                            productHTML += '<a href="' + product.url + '" class="url" target="_blank">View Deal</a>';
+                        }
+                        
+                        productHTML += '</div>'; // Close product-content
+                        
+                        productDiv.innerHTML = productHTML;
+                        container.appendChild(productDiv);
+                    } catch (e) {
+                        console.error('Error processing product:', e);
+                    }
+                });
                 
-                if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                    productHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
-                }
-                
-                if (product.discount) {
-                    productHTML += '<span class="discount">' + product.discount + ' off</span>';
-                }
-                
-                productHTML += '</div>' +
-                    '<div class="shop">Shop: ' + product.shop + '</div>';
-                
-                if (product.url) {
-                    productHTML += '<a href="' + product.url + '" class="url" target="_blank">View Product</a>';
-                }
-                
-                productDiv.innerHTML = productHTML;
-                container.appendChild(productDiv);
-            });
+                // Add filter functionality
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Update active button
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Filter products
+                        const filter = this.dataset.filter;
+                        const products = document.querySelectorAll('.product');
+                        
+                        products.forEach(product => {
+                            if (filter === 'all' || product.dataset.category === filter) {
+                                product.style.display = 'flex';
+                            } else {
+                                product.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            } catch (e) {
+                // Hide loading message and show error
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Error loading deals: ' + e.message;
+                console.error('Error displaying data:', e);
+            }
         });
     </script>
 </body>
