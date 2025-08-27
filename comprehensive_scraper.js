@@ -513,29 +513,44 @@ async function generateHTMLReport(data) {
         
         .controls {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-group h3 {
+            margin-bottom: 10px;
+            color: #4361ee;
+            font-size: 1.1rem;
         }
         
         .filter-btn {
-            padding: 12px 25px;
+            padding: 8px 15px;
             background: white;
             border: 2px solid #4361ee;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #4361ee;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 5px 5px 5px 0;
         }
         
         .filter-btn:hover {
             background: #4361ee;
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         
@@ -543,6 +558,36 @@ async function generateHTMLReport(data) {
             background: #4361ee;
             color: white;
             box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+        }
+        
+        .search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .search-group input {
+            padding: 10px 15px;
+            border: 2px solid #4361ee;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .search-group button {
+            padding: 8px 15px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-group button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
         }
         
         .products {
@@ -765,9 +810,41 @@ async function generateHTMLReport(data) {
         </div>
         
         <div class="controls">
-            <button class="filter-btn active" data-filter="all">All Deals</button>
-            <button class="filter-btn" data-filter="laptop">Laptops</button>
-            <button class="filter-btn" data-filter="phone">Phones</button>
+            <div class="filter-group">
+                <h3>Category</h3>
+                <button class="filter-btn active" data-filter="all">All Deals</button>
+                <button class="filter-btn" data-filter="laptop">Laptops</button>
+                <button class="filter-btn" data-filter="phone">Phones</button>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <button class="filter-btn" data-filter="price-all">All Prices</button>
+                <button class="filter-btn" data-filter="price-0-1000">Under KES 1,000</button>
+                <button class="filter-btn" data-filter="price-1000-5000">KES 1,000 - 5,000</button>
+                <button class="filter-btn" data-filter="price-5000-10000">KES 5,000 - 10,000</button>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Shop</h3>
+                <button class="filter-btn active" data-filter="shop-all">All Shops</button>
+                <button class="filter-btn" data-filter="shop-jumia">Jumia Kenya</button>
+                <button class="filter-btn" data-filter="shop-kilimall">Kilimall Kenya</button>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Discount</h3>
+                <button class="filter-btn" data-filter="discount-all">Any Discount</button>
+                <button class="filter-btn" data-filter="discount-20">20%+ Off</button>
+                <button class="filter-btn" data-filter="discount-30">30%+ Off</button>
+                <button class="filter-btn" data-filter="discount-50">50%+ Off</button>
+            </div>
+            
+            <div class="filter-group search-group">
+                <h3>Search</h3>
+                <input type="text" id="search-input" placeholder="Search products...">
+                <button id="clear-search">Clear</button>
+            </div>
         </div>
         
         <div id="loading" class="loading" style="display: none;">Loading amazing deals</div>
@@ -783,28 +860,206 @@ async function generateHTMLReport(data) {
     </div>
 
     <script>
+        // Store all products for filtering
+        const allProducts = ${JSON.stringify(data.items)};
+        
+        // Current filter states
+        const currentFilters = {
+            category: 'all',
+            priceRange: 'price-all',
+            shop: 'shop-all',
+            discount: 'discount-all',
+            search: ''
+        };
+        
         // Add filter functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
+            // Category filters
+            const categoryButtons = document.querySelectorAll('.filter-btn[data-filter="all"], .filter-btn[data-filter="laptop"], .filter-btn[data-filter="phone"]');
+            categoryButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     // Update active button
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Filter products
-                    const filter = this.dataset.filter;
-                    const products = document.querySelectorAll('.product');
-                    
-                    products.forEach(product => {
-                        if (filter === 'all' || product.dataset.category === filter) {
-                            product.style.display = 'flex';
-                        } else {
-                            product.style.display = 'none';
-                        }
-                    });
+                    // Update filter
+                    currentFilters.category = this.dataset.filter;
+                    applyFilters();
                 });
             });
+            
+            // Price range filters
+            const priceButtons = document.querySelectorAll('.filter-btn[data-filter^="price-"]');
+            priceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    priceButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update filter
+                    currentFilters.priceRange = this.dataset.filter;
+                    applyFilters();
+                });
+            });
+            
+            // Shop filters
+            const shopButtons = document.querySelectorAll('.filter-btn[data-filter^="shop-"]');
+            shopButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    shopButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update filter
+                    currentFilters.shop = this.dataset.filter;
+                    applyFilters();
+                });
+            });
+            
+            // Discount filters
+            const discountButtons = document.querySelectorAll('.filter-btn[data-filter^="discount-"]');
+            discountButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    discountButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update filter
+                    currentFilters.discount = this.dataset.filter;
+                    applyFilters();
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function() {
+                currentFilters.search = this.value.toLowerCase();
+                applyFilters();
+            });
+            
+            const clearSearchButton = document.getElementById('clear-search');
+            clearSearchButton.addEventListener('click', function() {
+                searchInput.value = '';
+                currentFilters.search = '';
+                applyFilters();
+            });
+            
+            // Apply all filters
+            function applyFilters() {
+                const productsContainer = document.getElementById('products-container');
+                let filteredProducts = [...allProducts];
+                
+                // Apply category filter
+                if (currentFilters.category !== 'all') {
+                    filteredProducts = filteredProducts.filter(product => product.category === currentFilters.category);
+                }
+                
+                // Apply price range filter
+                if (currentFilters.priceRange !== 'price-all') {
+                    switch (currentFilters.priceRange) {
+                        case 'price-0-1000':
+                            filteredProducts = filteredProducts.filter(product => product.currentPrice < 1000);
+                            break;
+                        case 'price-1000-5000':
+                            filteredProducts = filteredProducts.filter(product => product.currentPrice >= 1000 && product.currentPrice <= 5000);
+                            break;
+                        case 'price-5000-10000':
+                            filteredProducts = filteredProducts.filter(product => product.currentPrice > 5000 && product.currentPrice <= 10000);
+                            break;
+                    }
+                }
+                
+                // Apply shop filter
+                if (currentFilters.shop !== 'shop-all') {
+                    switch (currentFilters.shop) {
+                        case 'shop-jumia':
+                            filteredProducts = filteredProducts.filter(product => product.shop.includes('Jumia'));
+                            break;
+                        case 'shop-kilimall':
+                            filteredProducts = filteredProducts.filter(product => product.shop.includes('Kilimall'));
+                            break;
+                    }
+                }
+                
+                // Apply discount filter
+                if (currentFilters.discount !== 'discount-all') {
+                    switch (currentFilters.discount) {
+                        case 'discount-20':
+                            filteredProducts = filteredProducts.filter(product => {
+                                const discount = parseInt(product.discount) || 0;
+                                return discount >= 20;
+                            });
+                            break;
+                        case 'discount-30':
+                            filteredProducts = filteredProducts.filter(product => {
+                                const discount = parseInt(product.discount) || 0;
+                                return discount >= 30;
+                            });
+                            break;
+                        case 'discount-50':
+                            filteredProducts = filteredProducts.filter(product => {
+                                const discount = parseInt(product.discount) || 0;
+                                return discount >= 50;
+                            });
+                            break;
+                    }
+                }
+                
+                // Apply search filter
+                if (currentFilters.search) {
+                    filteredProducts = filteredProducts.filter(product => 
+                        product.name.toLowerCase().includes(currentFilters.search) ||
+                        product.shop.toLowerCase().includes(currentFilters.search)
+                    );
+                }
+                
+                // Generate HTML for filtered products
+                let productsHTML = '';
+                filteredProducts.forEach(product => {
+                    // Create image element
+                    let imageElement = '';
+                    if (product.imageUrl) {
+                        imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.onerror=null;this.parentElement.innerHTML=\'<div class="no-image">No image available</div>\';"></div>';
+                    } else {
+                        imageElement = '<div class="product-image-container"><div class="no-image">No image available</div></div>';
+                    }
+                    
+                    // Build product HTML
+                    productsHTML += '<div class="product" data-category="' + product.category + '" data-price="' + product.currentPrice + '" data-shop="' + product.shop + '">' +
+                        imageElement +
+                        '<div class="product-content">' +
+                        '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
+                        '<h3>' + product.name + '</h3>' +
+                        '<div class="shop">Shop: ' + product.shop + '</div>' +
+                        '<div class="price-container">' +
+                        '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
+                    
+                    if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                        productsHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
+                    }
+                    
+                    if (product.discount) {
+                        productsHTML += '<span class="discount">' + product.discount + ' off</span>';
+                    }
+                    
+                    productsHTML += '</div>';
+                    
+                    if (product.url) {
+                        productsHTML += '<a href="' + product.url + '" class="url" target="_blank">View Deal</a>';
+                    }
+                    
+                    productsHTML += '</div></div>';
+                });
+                
+                // Update products container
+                productsContainer.innerHTML = productsHTML;
+                
+                // Update total deals count
+                document.getElementById('total-deals').textContent = filteredProducts.length;
+            }
+            
+            // Initialize filters
+            applyFilters();
         });
     </script>
 </body>
