@@ -3,371 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Kenyan Electronics Deals Under 10,000 KES</title>
-    <meta name="description" content="Daily updated list of flash sales and special offers for phones and laptops under 10,000 KES from popular Kenyan online shops">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1400px;
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: #f5f5f5;
         }
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
         }
         .summary {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            text-align: center;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 15px;
-        }
-        .summary-item {
-            flex: 1;
-            min-width: 200px;
-        }
-        .summary-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2575fc;
-        }
-        .summary-label {
-            font-size: 1rem;
-            color: #666;
-        }
-        .last-updated {
-            font-size: 0.9rem;
-            color: #888;
-            margin-top: 10px;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 10px 20px;
-            background-color: #e9ecef;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .filter-btn.active {
-            background-color: #2575fc;
-            color: white;
+            text-align: center;
         }
         .products {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
         .product {
             background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            transition: transform 0.3s ease;
         }
         .product:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
-        .product-image-container {
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            overflow: hidden;
+        .product h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1em;
         }
-        .product-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #e74c3c;
         }
-        .no-image {
-            color: #adb5bd;
-            font-size: 0.9rem;
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+        }
+        .discount {
+            background-color: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .shop {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 10px;
         }
         .category {
             display: inline-block;
             color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            align-self: flex-start;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
         }
-        .laptop { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
-        .phone { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
-        .product h3 {
-            margin: 0 0 15px 0;
-            color: #212529;
-            font-size: 1.1rem;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-        .price-container {
-            margin: 15px 0;
-        }
-        .price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2575fc;
-        }
-        .original-price {
-            text-decoration: line-through;
-            color: #888;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        .discount {
-            background-color: #ff416c;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .shop {
-            color: #6c757d;
-            font-style: italic;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
+        .laptop { background-color: #9b59b6; }
+        .phone { background-color: #2ecc71; }
         .url {
             display: inline-block;
-            margin-top: auto;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #3498db;
             color: white;
             text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            text-align: center;
-            transition: opacity 0.3s;
+            border-radius: 3px;
+            font-size: 0.9em;
         }
         .url:hover {
-            opacity: 0.9;
+            background-color: #2980b9;
         }
-        footer {
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: #f8f8f8;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+        .no-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f8f8;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            color: #999;
+        }
+        .error-message {
+            color: red;
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
+            font-weight: bold;
+            margin: 20px 0;
         }
-        @media (max-width: 768px) {
-            .products {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-            h1 {
-                font-size: 2rem;
-            }
+        .loading {
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Kenyan Electronics Deals</h1>
-        <div class="subtitle">Daily updated flash sales for phones & laptops under KES 10,000</div>
-    </header>
+    <h1>Kenyan Electronics Deals Under 10,000 KES</h1>
     
     <div class="summary">
-        <div class="summary-item">
-            <div class="summary-value" id="total-deals">0</div>
-            <div class="summary-label">Total Deals</div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-value" id="laptop-deals">0</div>
-            <div class="summary-label">Laptops</div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-value" id="phone-deals">0</div>
-            <div class="summary-label">Phones</div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-value" id="avg-discount">0%</div>
-            <div class="summary-label">Avg. Discount</div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-label last-updated">Last updated: <span id="timestamp">Loading...</span></div>
-        </div>
+        <p>Last updated: <span id="timestamp">Loading...</span></p>
+        <p>Total deals found: <span id="total-deals">0</span></p>
     </div>
     
-    <div class="controls">
-        <button class="filter-btn active" data-filter="all">All Deals</button>
-        <button class="filter-btn" data-filter="laptop">Laptops</button>
-        <button class="filter-btn" data-filter="phone">Phones</button>
-    </div>
-    
+    <div id="loading" class="loading">Loading deals...</div>
+    <div id="error" class="error-message" style="display: none;"></div>
     <div class="products" id="products-container">
         <!-- Products will be inserted here -->
     </div>
-    
-    <footer>
-        <p>Data automatically updated daily | Source: Jumia Kenya</p>
-        <p>This is an unofficial scraper project for educational purposes only</p>
-    </footer>
 
     <script>
         // Embedded data
-        const data = {"timestamp":"2025-08-27T09:53:18.822Z","totalItems":30,"items":[{"shop":"Jumia Kenya","name":"Laptop Power Flower Cable Fused - 3 Pin Plug","category":"laptop","currentPrice":289,"originalPrice":289,"discount":"28%","url":"https://www.jumia.co.ke/laptop-power-flower-cable-fused-3-pin-plug-generic-mpg2965809.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/72/8264511/1.jpg?9313","timestamp":"2025-08-27T09:53:09.554Z"},{"shop":"Jumia Kenya","name":"HDMI To VGA Adapter 1080P For Laptop,pc,Desktop","category":"laptop","currentPrice":429,"originalPrice":429,"discount":"46%","url":"https://www.jumia.co.ke/generic-hdmi-to-vga-adapter-1080p-for-laptoppcdesktop-121539336.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/63/3935121/1.jpg?3706","timestamp":"2025-08-27T09:53:09.557Z"},{"shop":"Jumia Kenya","name":"HP Laptop Charger 19.5V 3.33A, 65W-Blue Pin","category":"laptop","currentPrice":941,"originalPrice":941,"discount":"48%","url":"https://www.jumia.co.ke/hp-laptop-charger-19.5v-3.33a-65w-blue-pin-201420727.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/72/7024102/1.jpg?6593","timestamp":"2025-08-27T09:53:09.556Z"},{"shop":"Jumia Kenya","name":"1080P Full HD USB Webcam Computer Camera With Microphone","category":"phone","currentPrice":978,"originalPrice":978,"discount":"30%","url":"https://www.jumia.co.ke/generic-1080p-full-hd-usb-webcam-computer-camera-with-microphone-299531479.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/97/4135992/1.jpg?6003","timestamp":"2025-08-27T09:53:09.559Z"},{"shop":"Jumia Kenya","name":"Lenovo LAPTOP CHARGER 20V 3.25A (SMALL PIN)","category":"laptop","currentPrice":987,"originalPrice":987,"discount":"45%","url":"https://www.jumia.co.ke/lenovo-laptop-charger-20v-3.25a-small-pin-150608160.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/06/1806051/1.jpg?8692","timestamp":"2025-08-27T09:53:09.553Z"},{"shop":"Jumia Kenya","name":"Waterproof Pouch Case Laptop Sleeve Bag","category":"laptop","currentPrice":1044,"originalPrice":1044,"discount":"48%","url":"https://www.jumia.co.ke/generic-waterproof-pouch-case-laptop-sleeve-bag-310041743.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/34/7140013/1.jpg?0850","timestamp":"2025-08-27T09:53:09.555Z"},{"shop":"Jumia Kenya","name":"1080P HD Webcam For PC Mac And Laptop Computers","category":"laptop","currentPrice":1240,"originalPrice":1240,"discount":"49%","url":"https://www.jumia.co.ke/1080p-hd-webcam-for-pc-mac-and-laptop-computers-generic-mpg3178591.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/2285332/1.jpg?8548","timestamp":"2025-08-27T09:53:09.558Z"},{"shop":"Jumia Kenya","name":"Tecno T301 2/Dual Sim,Button/KABAMBE/KATULULU/MULIKA MWIZI","category":"phone","currentPrice":1350,"originalPrice":1350,"discount":"55%","url":"https://www.jumia.co.ke/tecno-t301-2dual-simbuttonkabambekatululumulika-mwizi-177816301.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/10/3618771/1.jpg?4445","timestamp":"2025-08-27T09:53:13.335Z"},{"shop":"Jumia Kenya","name":"Tecno T301; (Dual Sim) Memory Card Slot, black","category":"phone","currentPrice":1350,"originalPrice":1350,"discount":"39%","url":"https://www.jumia.co.ke/t301-dual-sim-memory-card-slotblack-tecno-mpg1568337.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/14/821684/1.jpg?7253","timestamp":"2025-08-27T09:53:13.336Z"},{"shop":"Jumia Kenya","name":"Lenovo Ideapad Laptop Charger 20V","category":"laptop","currentPrice":1423,"originalPrice":1423,"discount":"51%","url":"https://www.jumia.co.ke/lenovo-ideapad-laptop-charger-20v-312675680.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/08/6576213/1.jpg?2638","timestamp":"2025-08-27T09:53:09.553Z"},{"shop":"Jumia Kenya","name":"Tecno BEST SMALL BUTTON PHONE T301 , Dual Sim, Button KABAMBE/ KATULULU phone + Free Headphone & Cap Free","category":"phone","currentPrice":1850,"originalPrice":1850,"discount":"53%","url":"https://www.jumia.co.ke/tecno-best-small-button-phone-t301-dual-sim-button-kabambe-katululu-phone-free-headphone-cap-free-286940032.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/23/0049682/1.jpg?2893","timestamp":"2025-08-27T09:53:13.337Z"},{"shop":"Jumia Kenya","name":"Type C Multiport Hub 5 in 1 Adapter Dock Convert to HDMI Multi USB Port Ethernet LAN Port and 100w PD Suitable for MacBook and Laptop","category":"laptop","currentPrice":1997,"originalPrice":1997,"discount":"49%","url":"https://www.jumia.co.ke/type-c-multiport-hub-5-in-1-adapter-dock-convert-to-hdmi-multi-usb-port-ethernet-lan-port-and-100w-pd-suitable-for-macbook-and-laptop-generic-mpg6083299.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/20/4334492/1.jpg?1954","timestamp":"2025-08-27T09:53:09.555Z"},{"shop":"Jumia Kenya","name":"Bontel Honey 1.54\"// Color Display Flip Phone//c,e","category":"phone","currentPrice":1999,"originalPrice":1999,"discount":"20%","url":"https://www.jumia.co.ke/bontel-honey-1.54-color-display-flip-phonece-65743251.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/234756/1.jpg?8184","timestamp":"2025-08-27T09:53:13.336Z"},{"shop":"Jumia Kenya","name":"Bontel T1000//Wireless Desktop Telephone//SMS Feature Phone (Dual Sim)BLACK","category":"phone","currentPrice":2789,"originalPrice":2789,"discount":"20%","url":"https://www.jumia.co.ke/t1000-....wireless-desktop-telephone...sms-feature-phone-..dual-simblack-bontel-mpg1779732.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/47/796184/1.jpg?4469","timestamp":"2025-08-27T09:53:13.336Z"},{"shop":"Jumia Kenya","name":"Tecno T529, screen Size28, LCD Screen, GSM, 008MP, 2500mAh Black","category":"phone","currentPrice":2900,"originalPrice":2900,"discount":"28%","url":"https://www.jumia.co.ke/tecno-t529-screen-size28-lcd-screen-gsm-008mp-2500mah-black-58581437.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/73/418585/1.jpg?7869","timestamp":"2025-08-27T09:53:13.334Z"},{"shop":"Jumia Kenya","name":"Itel Flip 1 Folding Phone - 2.4\" - 1200mAh (Dual SIM), Wireless FM, Blue (1YR WRTY)","category":"phone","currentPrice":2957,"originalPrice":2957,"discount":"17%","url":"https://www.jumia.co.ke/itel-flip-1-folding-phone-2.4-1200mah-dual-sim-wireless-fm-blue-1yr-wrty-251516893.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/39/8615152/1.jpg?8998","timestamp":"2025-08-27T09:53:13.334Z"},{"shop":"Jumia Kenya","name":"Nokia C1 2nd Edition, 5.45\", 1GB +16GB - (DUAL SIM),Android 11, Blue","category":"phone","currentPrice":5800,"originalPrice":5800,"discount":"47%","url":"https://www.jumia.co.ke/nokia-c1-2nd-edition-5.45-1gb-16gb-dual-simandroid-11-blue-115141551.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/5141511/1.jpg?2133","timestamp":"2025-08-27T09:53:13.330Z"},{"shop":"Jumia Kenya","name":"Freeyond FreeYond F9,2GB+64GB,6.52\" Smartphone,4G,5000mAh,Black","category":"phone","currentPrice":6297,"originalPrice":6297,"discount":"56%","url":"https://www.jumia.co.ke/freeyond-freeyond-f92gb64gb6.52-smartphone4g5000mahblack-91068795.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/59/786019/1.jpg?6963","timestamp":"2025-08-27T09:53:13.328Z"},{"shop":"Jumia Kenya","name":"Lenovo Chromebook – 4GB RAM, 32GB SSD, 11.6” HD Display, Wi-Fi, Chrome OS – Student Laptop Refurbished","category":"laptop","currentPrice":6500,"originalPrice":19000,"discount":"66%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=LE842CL5OBRZANAFAMZ-463167561&return=%2Flaptops%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/43/1911423/1.jpg?0210","timestamp":"2025-08-27T09:53:09.564Z"},{"shop":"Jumia Kenya","name":"Modio 5G Tablet - Kids Android Tablets PC M730","category":"phone","currentPrice":6500,"originalPrice":6500,"discount":"59%","url":"https://www.jumia.co.ke/modio-5g-tablet-kids-android-tablets-pc-m730-253235025.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/52/0532352/1.jpg?7011","timestamp":"2025-08-27T09:53:13.330Z"},{"shop":"Jumia Kenya","name":"Badili Samsung Galaxy A20 Smartphone – Refurbished Android Phone, 32GB ROM + 3GB RAM, Single SIM, Black + Free 32GB Memory Card","category":"phone","currentPrice":7349,"originalPrice":7349,"discount":"51%","url":"https://www.jumia.co.ke/renewed-badili-samsung-galaxy-a20-smartphone-refurbished-android-phone-32gb-rom-3gb-ram-single-sim-black-free-32gb-memory-card-203992828.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/82/8299302/1.jpg?4803","timestamp":"2025-08-27T09:53:13.330Z"},{"shop":"Jumia Kenya","name":"Freeyond FreeYond F9,3GB+128GB,6.52\",4G, Smartphone 5000mAh,Blue","category":"phone","currentPrice":7369,"originalPrice":7369,"discount":"1%","url":"https://www.jumia.co.ke/freeyond-freeyond-f93gb128gb6.524g-smartphone-5000mahblue-107218661.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/16/6812701/1.jpg?5196","timestamp":"2025-08-27T09:53:13.329Z"},{"shop":"Jumia Kenya","name":"Oppo Refurbished A83 4GB+ 64GB Smartphone - 4G LTE Dual Card 5.7-inch Display - Face Unlock（Black）","category":"phone","currentPrice":7888,"originalPrice":7888,"discount":"38%","url":"https://www.jumia.co.ke/renewed-oppo-refurbished-a83-4gb-64gb-smartphone-4g-lte-dual-card-5.7-inch-display-face-unlockblack-172090560.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/06/5090271/1.jpg?9458","timestamp":"2025-08-27T09:53:13.331Z"},{"shop":"Jumia Kenya","name":"XIAOMI Redmi A5, 6.88\", 3GB + 64GB , 5200mAh, DUAL SIM, 4G - Midnight Black","category":"phone","currentPrice":8599,"originalPrice":11200,"discount":"23%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XI996MP57PSCTNAFAMZ-452805885&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/2913413/1.jpg?8071","timestamp":"2025-08-27T09:53:13.348Z"},{"shop":"Jumia Kenya","name":"Samsung Galaxy A05, 6.7\", 64GB + 4GB RAM (Dual SIM), 5000mAh, Black, (2YRs WRTY)","category":"phone","currentPrice":8999,"originalPrice":13187,"discount":"32%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=SA948MP418OC1NAFAMZ-357102731&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/43/9491052/1.jpg?5057","timestamp":"2025-08-27T09:53:13.337Z"},{"shop":"Jumia Kenya","name":"XIAOMI POCO C71,  6.88\", 128GB + 4GB RAM (Dual SIM), 5200mAh, Black (2YRs WRTY)","category":"phone","currentPrice":8999,"originalPrice":11500,"discount":"22%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XI996MP62UBF7NAFAMZ-456451189&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/67/5707713/1.jpg?0919","timestamp":"2025-08-27T09:53:13.352Z"},{"shop":"Jumia Kenya","name":"Samsung Galaxy A05, 6.7'' 4GB RAM + 64GB ROM (Dual Sim) 50MP Camera, 5000mAh - Black","category":"phone","currentPrice":9000,"originalPrice":14999,"discount":"40%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/68/7188581/1.jpg?5048","timestamp":"2025-08-27T09:53:13.342Z"},{"shop":"Jumia Kenya","name":"X Tigi HeroBook 10.1\"- Quad Core - 4Gb RAM -128Gb ROM -Android Notebook- 4000mAh-13 Months Warranty","category":"phone","currentPrice":9300,"originalPrice":18938,"discount":"51%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XT648CL39JIUGNAFAMZ-138459435&return=%2Flaptops%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/97/4259601/1.jpg?4994","timestamp":"2025-08-27T09:53:09.565Z"},{"shop":"Jumia Kenya","name":"Samsung GALAXY A05,6.7 PLS LCD DISPLAY ,4GB RAM/64GB ROM,ANDROID 13,5000MAH,4G,DUAL,50MP+BEST GIFTS","category":"phone","currentPrice":9790,"originalPrice":18000,"discount":"46%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/05/2830871/1.jpg?6093","timestamp":"2025-08-27T09:53:13.350Z"},{"shop":"Jumia Kenya","name":"Samsung GALAXY A05,6.7 PLS LCD DISPLAY ,4GB RAM/64GB ROM,ANDROID 13,5000MAH,4G,DUAL,50MP+CV BT WTC","category":"phone","currentPrice":9800,"originalPrice":23000,"discount":"57%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/78/5630871/1.jpg?4248","timestamp":"2025-08-27T09:53:13.346Z"}]};
+        const data = {"timestamp":"2025-08-27T12:04:45.884Z","totalItems":30,"items":[{"shop":"Jumia Kenya","name":"Laptop Power Flower Cable Fused - 3 Pin Plug","category":"laptop","currentPrice":289,"originalPrice":289,"discount":"28%","url":"https://www.jumia.co.ke/laptop-power-flower-cable-fused-3-pin-plug-generic-mpg2965809.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/72/8264511/1.jpg?9313","timestamp":"2025-08-27T12:04:40.443Z"},{"shop":"Jumia Kenya","name":"HDMI To VGA Adapter 1080P For Laptop,pc,Desktop","category":"laptop","currentPrice":429,"originalPrice":429,"discount":"46%","url":"https://www.jumia.co.ke/generic-hdmi-to-vga-adapter-1080p-for-laptoppcdesktop-121539336.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/63/3935121/1.jpg?3706","timestamp":"2025-08-27T12:04:40.447Z"},{"shop":"Jumia Kenya","name":"HP Laptop Charger 19.5V 3.33A, 65W-Blue Pin","category":"laptop","currentPrice":941,"originalPrice":941,"discount":"48%","url":"https://www.jumia.co.ke/hp-laptop-charger-19.5v-3.33a-65w-blue-pin-201420727.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/72/7024102/1.jpg?6593","timestamp":"2025-08-27T12:04:40.444Z"},{"shop":"Jumia Kenya","name":"1080P Full HD USB Webcam Computer Camera With Microphone","category":"phone","currentPrice":978,"originalPrice":978,"discount":"30%","url":"https://www.jumia.co.ke/generic-1080p-full-hd-usb-webcam-computer-camera-with-microphone-299531479.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/97/4135992/1.jpg?6003","timestamp":"2025-08-27T12:04:40.450Z"},{"shop":"Jumia Kenya","name":"Lenovo LAPTOP CHARGER 20V 3.25A (SMALL PIN)","category":"laptop","currentPrice":987,"originalPrice":987,"discount":"45%","url":"https://www.jumia.co.ke/lenovo-laptop-charger-20v-3.25a-small-pin-150608160.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/06/1806051/1.jpg?8692","timestamp":"2025-08-27T12:04:40.440Z"},{"shop":"Jumia Kenya","name":"Waterproof Pouch Case Laptop Sleeve Bag","category":"laptop","currentPrice":1044,"originalPrice":1044,"discount":"48%","url":"https://www.jumia.co.ke/generic-waterproof-pouch-case-laptop-sleeve-bag-310041743.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/34/7140013/1.jpg?0850","timestamp":"2025-08-27T12:04:40.444Z"},{"shop":"Jumia Kenya","name":"1080P HD Webcam For PC Mac And Laptop Computers","category":"laptop","currentPrice":1240,"originalPrice":1240,"discount":"49%","url":"https://www.jumia.co.ke/1080p-hd-webcam-for-pc-mac-and-laptop-computers-generic-mpg3178591.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/2285332/1.jpg?8548","timestamp":"2025-08-27T12:04:40.448Z"},{"shop":"Jumia Kenya","name":"Tecno T301 2/Dual Sim,Button/KABAMBE/KATULULU/MULIKA MWIZI","category":"phone","currentPrice":1350,"originalPrice":1350,"discount":"55%","url":"https://www.jumia.co.ke/tecno-t301-2dual-simbuttonkabambekatululumulika-mwizi-177816301.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/10/3618771/1.jpg?4445","timestamp":"2025-08-27T12:04:41.717Z"},{"shop":"Jumia Kenya","name":"Tecno T301; (Dual Sim) Memory Card Slot, black","category":"phone","currentPrice":1350,"originalPrice":1350,"discount":"39%","url":"https://www.jumia.co.ke/t301-dual-sim-memory-card-slotblack-tecno-mpg1568337.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/14/821684/1.jpg?7253","timestamp":"2025-08-27T12:04:41.718Z"},{"shop":"Jumia Kenya","name":"Lenovo Ideapad Laptop Charger 20V","category":"laptop","currentPrice":1423,"originalPrice":1423,"discount":"51%","url":"https://www.jumia.co.ke/lenovo-ideapad-laptop-charger-20v-312675680.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/08/6576213/1.jpg?2638","timestamp":"2025-08-27T12:04:40.439Z"},{"shop":"Jumia Kenya","name":"Tecno BEST SMALL BUTTON PHONE T301 , Dual Sim, Button KABAMBE/ KATULULU phone + Free Headphone & Cap Free","category":"phone","currentPrice":1850,"originalPrice":1850,"discount":"53%","url":"https://www.jumia.co.ke/tecno-best-small-button-phone-t301-dual-sim-button-kabambe-katululu-phone-free-headphone-cap-free-286940032.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/23/0049682/1.jpg?2893","timestamp":"2025-08-27T12:04:41.718Z"},{"shop":"Jumia Kenya","name":"Type C Multiport Hub 5 in 1 Adapter Dock Convert to HDMI Multi USB Port Ethernet LAN Port and 100w PD Suitable for MacBook and Laptop","category":"laptop","currentPrice":1997,"originalPrice":1997,"discount":"49%","url":"https://www.jumia.co.ke/type-c-multiport-hub-5-in-1-adapter-dock-convert-to-hdmi-multi-usb-port-ethernet-lan-port-and-100w-pd-suitable-for-macbook-and-laptop-generic-mpg6083299.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/20/4334492/1.jpg?1954","timestamp":"2025-08-27T12:04:40.443Z"},{"shop":"Jumia Kenya","name":"Bontel Honey 1.54\"// Color Display Flip Phone//c,e","category":"phone","currentPrice":1999,"originalPrice":1999,"discount":"20%","url":"https://www.jumia.co.ke/bontel-honey-1.54-color-display-flip-phonece-65743251.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/234756/1.jpg?8184","timestamp":"2025-08-27T12:04:41.717Z"},{"shop":"Jumia Kenya","name":"Bontel T1000//Wireless Desktop Telephone//SMS Feature Phone (Dual Sim)BLACK","category":"phone","currentPrice":2789,"originalPrice":2789,"discount":"20%","url":"https://www.jumia.co.ke/t1000-....wireless-desktop-telephone...sms-feature-phone-..dual-simblack-bontel-mpg1779732.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/47/796184/1.jpg?4469","timestamp":"2025-08-27T12:04:41.718Z"},{"shop":"Jumia Kenya","name":"Tecno T529, screen Size28, LCD Screen, GSM, 008MP, 2500mAh Black","category":"phone","currentPrice":2900,"originalPrice":2900,"discount":"28%","url":"https://www.jumia.co.ke/tecno-t529-screen-size28-lcd-screen-gsm-008mp-2500mah-black-58581437.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/73/418585/1.jpg?7869","timestamp":"2025-08-27T12:04:41.715Z"},{"shop":"Jumia Kenya","name":"Itel Flip 1 Folding Phone - 2.4\" - 1200mAh (Dual SIM), Wireless FM, Blue (1YR WRTY)","category":"phone","currentPrice":2957,"originalPrice":2957,"discount":"17%","url":"https://www.jumia.co.ke/itel-flip-1-folding-phone-2.4-1200mah-dual-sim-wireless-fm-blue-1yr-wrty-251516893.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/39/8615152/1.jpg?8998","timestamp":"2025-08-27T12:04:41.715Z"},{"shop":"Jumia Kenya","name":"Nokia C1 2nd Edition, 5.45\", 1GB +16GB - (DUAL SIM),Android 11, Blue","category":"phone","currentPrice":5800,"originalPrice":5800,"discount":"47%","url":"https://www.jumia.co.ke/nokia-c1-2nd-edition-5.45-1gb-16gb-dual-simandroid-11-blue-115141551.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/5141511/1.jpg?2133","timestamp":"2025-08-27T12:04:41.710Z"},{"shop":"Jumia Kenya","name":"Freeyond FreeYond F9,2GB+64GB,6.52\" Smartphone,4G,5000mAh,Black","category":"phone","currentPrice":6297,"originalPrice":6297,"discount":"56%","url":"https://www.jumia.co.ke/freeyond-freeyond-f92gb64gb6.52-smartphone4g5000mahblack-91068795.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/59/786019/1.jpg?6963","timestamp":"2025-08-27T12:04:41.708Z"},{"shop":"Jumia Kenya","name":"Lenovo Chromebook – 4GB RAM, 32GB SSD, 11.6” HD Display, Wi-Fi, Chrome OS – Student Laptop Refurbished","category":"laptop","currentPrice":6500,"originalPrice":19000,"discount":"66%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=LE842CL5OBRZANAFAMZ-463167561&return=%2Flaptops%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/43/1911423/1.jpg?0210","timestamp":"2025-08-27T12:04:40.460Z"},{"shop":"Jumia Kenya","name":"Modio 5G Tablet - Kids Android Tablets PC M730","category":"phone","currentPrice":6500,"originalPrice":6500,"discount":"59%","url":"https://www.jumia.co.ke/modio-5g-tablet-kids-android-tablets-pc-m730-253235025.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/52/0532352/1.jpg?7011","timestamp":"2025-08-27T12:04:41.710Z"},{"shop":"Jumia Kenya","name":"Badili Samsung Galaxy A20 Smartphone – Refurbished Android Phone, 32GB ROM + 3GB RAM, Single SIM, Black + Free 32GB Memory Card","category":"phone","currentPrice":7349,"originalPrice":7349,"discount":"51%","url":"https://www.jumia.co.ke/renewed-badili-samsung-galaxy-a20-smartphone-refurbished-android-phone-32gb-rom-3gb-ram-single-sim-black-free-32gb-memory-card-203992828.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/82/8299302/1.jpg?4803","timestamp":"2025-08-27T12:04:41.710Z"},{"shop":"Jumia Kenya","name":"Freeyond FreeYond F9,3GB+128GB,6.52\",4G, Smartphone 5000mAh,Blue","category":"phone","currentPrice":7369,"originalPrice":7369,"discount":"1%","url":"https://www.jumia.co.ke/freeyond-freeyond-f93gb128gb6.524g-smartphone-5000mahblue-107218661.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/16/6812701/1.jpg?5196","timestamp":"2025-08-27T12:04:41.708Z"},{"shop":"Jumia Kenya","name":"Oppo Refurbished A83 4GB+ 64GB Smartphone - 4G LTE Dual Card 5.7-inch Display - Face Unlock（Black）","category":"phone","currentPrice":7888,"originalPrice":7888,"discount":"38%","url":"https://www.jumia.co.ke/renewed-oppo-refurbished-a83-4gb-64gb-smartphone-4g-lte-dual-card-5.7-inch-display-face-unlockblack-172090560.html","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/06/5090271/1.jpg?9458","timestamp":"2025-08-27T12:04:41.711Z"},{"shop":"Jumia Kenya","name":"XIAOMI Redmi A5, 6.88\", 3GB + 64GB , 5200mAh, DUAL SIM, 4G - Midnight Black","category":"phone","currentPrice":8599,"originalPrice":11200,"discount":"23%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XI996MP57PSCTNAFAMZ-452805885&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/15/2913413/1.jpg?8071","timestamp":"2025-08-27T12:04:41.748Z"},{"shop":"Jumia Kenya","name":"Samsung Galaxy A05, 6.7\", 64GB + 4GB RAM (Dual SIM), 5000mAh, Black, (2YRs WRTY)","category":"phone","currentPrice":8999,"originalPrice":13187,"discount":"32%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=SA948MP418OC1NAFAMZ-357102731&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/43/9491052/1.jpg?5057","timestamp":"2025-08-27T12:04:41.719Z"},{"shop":"Jumia Kenya","name":"XIAOMI POCO C71,  6.88\", 128GB + 4GB RAM (Dual SIM), 5200mAh, Black (2YRs WRTY)","category":"phone","currentPrice":8999,"originalPrice":11500,"discount":"22%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XI996MP62UBF7NAFAMZ-456451189&return=%2Fsmartphones%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/67/5707713/1.jpg?0919","timestamp":"2025-08-27T12:04:41.753Z"},{"shop":"Jumia Kenya","name":"Samsung Galaxy A05, 6.7'' 4GB RAM + 64GB ROM (Dual Sim) 50MP Camera, 5000mAh - Black","category":"phone","currentPrice":9000,"originalPrice":14999,"discount":"40%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/68/7188581/1.jpg?5048","timestamp":"2025-08-27T12:04:41.744Z"},{"shop":"Jumia Kenya","name":"X Tigi HeroBook 10.1\"- Quad Core - 4Gb RAM -128Gb ROM -Android Notebook- 4000mAh-13 Months Warranty","category":"phone","currentPrice":9300,"originalPrice":18938,"discount":"51%","url":"https://www.jumia.co.ke/customer/account/login/?tkWl=XT648CL39JIUGNAFAMZ-138459435&return=%2Flaptops%2F","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/97/4259601/1.jpg?4994","timestamp":"2025-08-27T12:04:40.461Z"},{"shop":"Jumia Kenya","name":"Samsung GALAXY A05,6.7 PLS LCD DISPLAY ,4GB RAM/64GB ROM,ANDROID 13,5000MAH,4G,DUAL,50MP+BEST GIFTS","category":"phone","currentPrice":9790,"originalPrice":18000,"discount":"46%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/05/2830871/1.jpg?6093","timestamp":"2025-08-27T12:04:41.751Z"},{"shop":"Jumia Kenya","name":"Samsung GALAXY A05,6.7 PLS LCD DISPLAY ,4GB RAM/64GB ROM,ANDROID 13,5000MAH,4G,DUAL,50MP+CV BT WTC","category":"phone","currentPrice":9800,"originalPrice":23000,"discount":"57%","url":"","imageUrl":"https://ke.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/78/5630871/1.jpg?4248","timestamp":"2025-08-27T12:04:41.746Z"}]};
         
         // Format timestamp for display
         function formatTimestamp(timestamp) {
-            const date = new Date(timestamp);
-            return date.toLocaleString('en-KE', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
-            });
-        }
-        
-        // Calculate statistics
-        function calculateStats(items) {
-            const laptopDeals = items.filter(item => item.category === 'laptop').length;
-            const phoneDeals = items.filter(item => item.category === 'phone').length;
-            
-            // Calculate average discount
-            let totalDiscount = 0;
-            let validDiscounts = 0;
-            
-            items.forEach(item => {
-                if (item.discount && item.discount.includes('%')) {
-                    const discountValue = parseInt(item.discount);
-                    if (!isNaN(discountValue)) {
-                        totalDiscount += discountValue;
-                        validDiscounts++;
-                    }
-                }
-            });
-            
-            const avgDiscount = validDiscounts > 0 ? Math.round(totalDiscount / validDiscounts) : 0;
-            
-            return {
-                laptopDeals,
-                phoneDeals,
-                avgDiscount
-            };
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleString('en-KE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                console.error('Error formatting timestamp:', e);
+                return 'Unknown';
+            }
         }
         
         // Display the data
         document.addEventListener('DOMContentLoaded', function() {
-            // Update summary information
-            document.getElementById('timestamp').textContent = formatTimestamp(data.timestamp);
-            document.getElementById('total-deals').textContent = data.totalItems;
-            
-            // Calculate and display stats
-            const stats = calculateStats(data.items);
-            document.getElementById('laptop-deals').textContent = stats.laptopDeals;
-            document.getElementById('phone-deals').textContent = stats.phoneDeals;
-            document.getElementById('avg-discount').textContent = stats.avgDiscount + '%';
-            
-            // Display products
-            const container = document.getElementById('products-container');
-            
-            data.items.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.dataset.category = product.category;
+            try {
+                // Hide loading message
+                document.getElementById('loading').style.display = 'none';
                 
-                // Create image element
-                let imageElement = '';
-                if (product.imageUrl) {
-                    imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.parentElement.innerHTML='<div class=\'no-image\'>No image available</div>';"></div>';
-                } else {
-                    imageElement = '<div class="product-image-container"><div class="no-image">No image available</div></div>';
+                // Update summary information
+                document.getElementById('timestamp').textContent = formatTimestamp(data.timestamp);
+                document.getElementById('total-deals').textContent = data.totalItems;
+                
+                // Display products
+                const container = document.getElementById('products-container');
+                
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = '<p class="error-message">No deals found.</p>';
+                    return;
                 }
                 
-                let productHTML = imageElement +
-                    '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
-                    '<h3>' + product.name + '</h3>' +
-                    '<div class="shop">Shop: ' + product.shop + '</div>' +
-                    '<div class="price-container">' +
-                    '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
-                
-                if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                    productHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
-                }
-                
-                if (product.discount) {
-                    productHTML += '<span class="discount">' + product.discount + ' off</span>';
-                }
-                
-                productHTML += '</div>';
-                
-                if (product.url) {
-                    productHTML += '<a href="' + product.url + '" class="url" target="_blank">View Deal</a>';
-                }
-                
-                productDiv.innerHTML = productHTML;
-                container.appendChild(productDiv);
-            });
-            
-            // Add filter functionality
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Update active button
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Filter products
-                    const filter = this.dataset.filter;
-                    const products = document.querySelectorAll('.product');
-                    
-                    products.forEach(product => {
-                        if (filter === 'all' || product.dataset.category === filter) {
-                            product.style.display = 'flex';
+                data.items.forEach(product => {
+                    try {
+                        const productDiv = document.createElement('div');
+                        productDiv.className = 'product';
+                        
+                        // Create image element
+                        let imageElement = '';
+                        if (product.imageUrl) {
+                            imageElement = '<img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.parentElement.innerHTML=\'<div class=\\\'no-image\\\'>No image available</div>\' + this.parentElement.innerHTML; this.remove();">';
                         } else {
-                            product.style.display = 'none';
+                            imageElement = '<div class="no-image">No image available</div>';
                         }
-                    });
+                        
+                        let productHTML = imageElement +
+                            '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
+                            '<h3>' + product.name + '</h3>' +
+                            '<div>' +
+                            '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
+                        
+                        if (product.originalPrice && product.originalPrice > product.currentPrice) {
+                            productHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
+                        }
+                        
+                        if (product.discount) {
+                            productHTML += '<span class="discount">' + product.discount + ' off</span>';
+                        }
+                        
+                        productHTML += '</div>' +
+                            '<div class="shop">Shop: ' + product.shop + '</div>';
+                        
+                        if (product.url) {
+                            productHTML += '<a href="' + product.url + '" class="url" target="_blank">View Product</a>';
+                        }
+                        
+                        productDiv.innerHTML = productHTML;
+                        container.appendChild(productDiv);
+                    } catch (e) {
+                        console.error('Error processing product:', e);
+                    }
                 });
-            });
+            } catch (e) {
+                // Hide loading message and show error
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Error loading deals: ' + e.message;
+                console.error('Error displaying data:', e);
+            }
         });
     </script>
 </body>
