@@ -378,15 +378,15 @@ async function generateHTMLReport(data) {
     }
     
     // Build product HTML
-    productsHTML += `
-      <div class="product" data-category="${product.category}">
-        ${imageElement}
-        <div class="product-content">
-          <div class="category ${product.category}">${product.category.toUpperCase()}</div>
-          <h3>${product.name}</h3>
-          <div class="shop">Shop: ${product.shop}</div>
-          <div class="price-container">
-            <span class="price">KES ${product.currentPrice.toLocaleString()}</span>`;
+                    productsHTML += `
+                      <div class="product" data-category="${product.category}" data-price="${product.currentPrice}" data-shop="${product.shop}">
+                        ${imageElement}
+                        <div class="product-content">
+                          <div class="category ${product.category}">${product.category.toUpperCase()}</div>
+                          <h3>${product.name}</h3>
+                          <div class="shop">Shop: ${product.shop}</div>
+                          <div class="price-container">
+                            <span class="price">KES ${product.currentPrice.toLocaleString()}</span>`;
     
     if (product.originalPrice && product.originalPrice > product.currentPrice) {
       productsHTML += `<span class="original-price">KES ${product.originalPrice.toLocaleString()}</span>`;
