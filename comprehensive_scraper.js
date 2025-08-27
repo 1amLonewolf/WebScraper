@@ -346,8 +346,66 @@ async function saveResults(results) {
  * Generates an HTML report with embedded data
  */
 async function generateHTMLReport(data) {
-  // Escape JSON data for use in HTML
-  const escapedData = JSON.stringify(data).replace(/</g, '\u003c').replace(/>/g, '\u003e');
+  // Format the timestamp for display
+  const formattedTimestamp = new Date(data.timestamp).toLocaleString('en-KE', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  // Calculate statistics
+  const laptopDeals = data.items.filter(item => item.category === 'laptop').length;
+  const phoneDeals = data.items.filter(item => item.category === 'phone').length;
+  
+  // Generate product HTML
+  let productsHTML = '';
+  data.items.forEach(product => {
+    // Create image element
+    let imageElement = '';
+    if (product.imageUrl) {
+      imageElement = `
+        <div class="product-image-container">
+          <img src="${product.imageUrl}" alt="${product.name}" class="product-image" onerror="this.onerror=null;this.parentElement.innerHTML='&lt;div class=&quot;no-image&quot;&gt;No image available&lt;/div&gt;';">
+        </div>`;
+    } else {
+      imageElement = `
+        <div class="product-image-container">
+          <div class="no-image">No image available</div>
+        </div>`;
+    }
+    
+    // Build product HTML
+    productsHTML += `
+      <div class="product" data-category="${product.category}">
+        ${imageElement}
+        <div class="product-content">
+          <div class="category ${product.category}">${product.category.toUpperCase()}</div>
+          <h3>${product.name}</h3>
+          <div class="shop">Shop: ${product.shop}</div>
+          <div class="price-container">
+            <span class="price">KES ${product.currentPrice.toLocaleString()}</span>`;
+    
+    if (product.originalPrice && product.originalPrice > product.currentPrice) {
+      productsHTML += `<span class="original-price">KES ${product.originalPrice.toLocaleString()}</span>`;
+    }
+    
+    if (product.discount) {
+      productsHTML += `<span class="discount">${product.discount} off</span>`;
+    }
+    
+    productsHTML += `
+          </div>`;
+    
+    if (product.url) {
+      productsHTML += `<a href="${product.url}" class="url" target="_blank">View Deal</a>`;
+    }
+    
+    productsHTML += `
+        </div>
+      </div>`;
+  });
   
   const htmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -690,16 +748,16 @@ async function generateHTMLReport(data) {
         
         <div class="summary">
             <div class="summary-item">
-                <div class="summary-value" id="total-deals">0</div>
+                <div class="summary-value" id="total-deals">${data.totalItems}</div>
                 <div class="summary-label">Total Deals</div>
-                <div class="last-updated">Last updated: <span id="timestamp">Loading...</span></div>
+                <div class="last-updated">Last updated: <span id="timestamp">${formattedTimestamp}</span></div>
             </div>
             <div class="summary-item">
-                <div class="summary-value" id="laptop-deals">0</div>
+                <div class="summary-value" id="laptop-deals">${laptopDeals}</div>
                 <div class="summary-label">Laptop Deals</div>
             </div>
             <div class="summary-item">
-                <div class="summary-value" id="phone-deals">0</div>
+                <div class="summary-value" id="phone-deals">${phoneDeals}</div>
                 <div class="summary-label">Phone Deals</div>
             </div>
         </div>
@@ -710,164 +768,41 @@ async function generateHTMLReport(data) {
             <button class="filter-btn" data-filter="phone">Phones</button>
         </div>
         
-        <div id="loading" class="loading">Loading amazing deals</div>
+        <div id="loading" class="loading" style="display: none;">Loading amazing deals</div>
         <div id="error" class="error-message" style="display: none;"></div>
         <div class="products" id="products-container">
-            <!-- Products will be inserted here -->
+            ${productsHTML}
         </div>
         
         <footer>
-            <p>Data refreshed daily • Last scrape: <span id="footer-timestamp">Loading...</span></p>
+            <p>Data refreshed daily • Last scrape: <span id="footer-timestamp">${formattedTimestamp}</span></p>
             <p>Deals from Jumia Kenya and other Kenyan online shops</p>
         </footer>
     </div>
 
     <script>
-        // Embedded data
-        const data = ${escapedData};
-        
-        // Format timestamp for display
-        function formatTimestamp(timestamp) {
-            try {
-                const date = new Date(timestamp);
-                return date.toLocaleString('en-KE', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            } catch (e) {
-                console.error('Error formatting timestamp:', e);
-                return 'Unknown';
-            }
-        }
-        
-        // Calculate statistics
-        function calculateStats(items) {
-            const laptopDeals = items.filter(item => item.category === 'laptop').length;
-            const phoneDeals = items.filter(item => item.category === 'phone').length;
-            
-            // Calculate average discount
-            let totalDiscount = 0;
-            let discountCount = 0;
-            
-            items.forEach(item => {
-                if (item.discount && item.discount !== '') {
-                    const discountValue = parseInt(item.discount);
-                    if (!isNaN(discountValue)) {
-                        totalDiscount += discountValue;
-                        discountCount++;
-                    }
-                }
-            });
-            
-            const avgDiscount = discountCount > 0 ? Math.round(totalDiscount / discountCount) : 0;
-            
-            return {
-                laptopDeals,
-                phoneDeals,
-                avgDiscount
-            };
-        }
-        
-        // Display the data
+        // Add filter functionality
         document.addEventListener('DOMContentLoaded', function() {
-            try {
-                // Hide loading message
-                document.getElementById('loading').style.display = 'none';
-                
-                // Update summary information
-                document.getElementById('timestamp').textContent = formatTimestamp(data.timestamp);
-                document.getElementById('footer-timestamp').textContent = formatTimestamp(data.timestamp);
-                document.getElementById('total-deals').textContent = data.totalItems;
-                
-                // Calculate and display stats
-                const stats = calculateStats(data.items);
-                document.getElementById('laptop-deals').textContent = stats.laptopDeals;
-                document.getElementById('phone-deals').textContent = stats.phoneDeals;
-                
-                // Display products
-                const container = document.getElementById('products-container');
-                
-                if (!data.items || data.items.length === 0) {
-                    container.innerHTML = '<p class="error-message">No deals found.</p>';
-                    return;
-                }
-                
-                data.items.forEach(product => {
-                    try {
-                        const productDiv = document.createElement('div');
-                        productDiv.className = 'product';
-                        productDiv.dataset.category = product.category;
-                        
-                        // Create image element
-                        let imageElement = '';
-                        if (product.imageUrl) {
-                            imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.onerror=null;this.parentElement.innerHTML='No image available';"></div>';
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter products
+                    const filter = this.dataset.filter;
+                    const products = document.querySelectorAll('.product');
+                    
+                    products.forEach(product => {
+                        if (filter === 'all' || product.dataset.category === filter) {
+                            product.style.display = 'flex';
                         } else {
-                            imageElement = '<div class="product-image-container"><div class="no-image">No image available</div></div>';
+                            product.style.display = 'none';
                         }
-                        
-                        let productHTML = imageElement +
-                            '<div class="product-content">' +
-                            '<div class="category ' + product.category + '">' + product.category.toUpperCase() + '</div>' +
-                            '<h3>' + product.name + '</h3>' +
-                            '<div class="shop">Shop: ' + product.shop + '</div>' +
-                            '<div class="price-container">' +
-                            '<span class="price">KES ' + product.currentPrice.toLocaleString() + '</span>';
-                        
-                        if (product.originalPrice && product.originalPrice > product.currentPrice) {
-                            productHTML += '<span class="original-price">KES ' + product.originalPrice.toLocaleString() + '</span>';
-                        }
-                        
-                        if (product.discount) {
-                            productHTML += '<span class="discount">' + product.discount + ' off</span>';
-                        }
-                        
-                        productHTML += '</div>';
-                        
-                        if (product.url) {
-                            productHTML += '<a href="' + product.url + '" class="url" target="_blank">View Deal</a>';
-                        }
-                        
-                        productHTML += '</div>'; // Close product-content
-                        
-                        productDiv.innerHTML = productHTML;
-                        container.appendChild(productDiv);
-                    } catch (e) {
-                        console.error('Error processing product:', e);
-                    }
-                });
-                
-                // Add filter functionality
-                const filterButtons = document.querySelectorAll('.filter-btn');
-                filterButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        // Update active button
-                        filterButtons.forEach(btn => btn.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Filter products
-                        const filter = this.dataset.filter;
-                        const products = document.querySelectorAll('.product');
-                        
-                        products.forEach(product => {
-                            if (filter === 'all' || product.dataset.category === filter) {
-                                product.style.display = 'flex';
-                            } else {
-                                product.style.display = 'none';
-                            }
-                        });
                     });
                 });
-            } catch (e) {
-                // Hide loading message and show error
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('error').style.display = 'block';
-                document.getElementById('error').textContent = 'Error loading deals: ' + e.message;
-                console.error('Error displaying data:', e);
-            }
+            });
         });
     </script>
 </body>
