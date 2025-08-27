@@ -804,7 +804,7 @@ async function generateHTMLReport(data) {
                         // Create image element
                         let imageElement = '';
                         if (product.imageUrl) {
-                            imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.parentElement.innerHTML='<div class=\\\\'no-image\\\\'>No image available</div>';"></div>';
+                            imageElement = '<div class="product-image-container"><img src="' + product.imageUrl + '" alt="' + product.name + '" class="product-image" onerror="this.onerror=null;this.parentElement.innerHTML='No image available';"></div>';
                         } else {
                             imageElement = '<div class="product-image-container"><div class="no-image">No image available</div></div>';
                         }
