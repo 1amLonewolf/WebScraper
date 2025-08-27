@@ -1,6 +1,13 @@
 # Kenyan Electronics Deals Scraper
 
+[![View Live Site](https://img.shields.io/badge/View-Live%20Site-blue?style=for-the-badge&logo=google-chrome)](https://1amlonewolf.github.io/WebScraper/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-green?style=for-the-badge&logo=github)](https://1amlonewolf.github.io/WebScraper/)
+
 A web scraper that finds flash sales and special offers for phones and laptops under 10,000 KES from popular Kenyan online shops.
+
+## 🌐 Live Site
+
+**Visit the live site:** https://1amlonewolf.github.io/WebScraper/
 
 ## Features
 
