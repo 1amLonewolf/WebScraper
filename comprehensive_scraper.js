@@ -865,6 +865,18 @@ async function main() {
     // Save to file
     await saveResults(allProducts);
     
+    // Copy custom favicon
+    try {
+      const fs = require('fs').promises;
+      const path = require('path');
+      const faviconSource = path.join(__dirname, 'WebScraper.png');
+      const faviconDest = path.join(__dirname, 'docs', 'favicon.png');
+      await fs.copyFile(faviconSource, faviconDest);
+      console.log('Custom favicon copied successfully');
+    } catch (error) {
+      console.log('Using default favicon');
+    }
+    
     console.log(`Total unique items found: ${allProducts.length}`);
   } catch (error) {
     console.error('Error during scraping:', error.message);
