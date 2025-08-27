@@ -1,0 +1,59 @@
+{
+  "timestamp": "2025-08-27T08:28:41.401Z",
+  "results": [
+    {
+      "shop": "Jumia Kenya",
+      "product": "Sample Laptop",
+      "price": 8500,
+      "originalPrice": 12000,
+      "discount": "29%",
+      "url": "https://www.jumia.co.ke/sample-laptop",
+      "category": "laptop"
+    },
+    {
+      "shop": "Jumia Kenya",
+      "product": "Sample Smartphone",
+      "price": 9200,
+      "originalPrice": 11000,
+      "discount": "16%",
+      "url": "https://www.jumia.co.ke/sample-phone",
+      "category": "phone"
+    },
+    {
+      "shop": "Kilimall Kenya",
+      "product": "Sample Laptop",
+      "price": 8500,
+      "originalPrice": 12000,
+      "discount": "29%",
+      "url": "https://www.kilimall.co.ke/sample-laptop",
+      "category": "laptop"
+    },
+    {
+      "shop": "Kilimall Kenya",
+      "product": "Sample Smartphone",
+      "price": 9200,
+      "originalPrice": 11000,
+      "discount": "16%",
+      "url": "https://www.kilimall.co.ke/sample-phone",
+      "category": "phone"
+    },
+    {
+      "shop": "AliExpress Kenya",
+      "product": "Sample Laptop",
+      "price": 8500,
+      "originalPrice": 12000,
+      "discount": "29%",
+      "url": "https://www.aliexpress.com/sample-laptop",
+      "category": "laptop"
+    },
+    {
+      "shop": "AliExpress Kenya",
+      "product": "Sample Smartphone",
+      "price": 9200,
+      "originalPrice": 11000,
+      "discount": "16%",
+      "url": "https://www.aliexpress.com/sample-phone",
+      "category": "phone"
+    }
+  ]
+}

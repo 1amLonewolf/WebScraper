@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenyan Electronics Deals Under 10,000 KES</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .summary {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+        }
+        .product h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+        }
+        .discount {
+            background-color: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .shop {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .category {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        .laptop { background-color: #9b59b6; }
+        .phone { background-color: #2ecc71; }
+        .url {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .url:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kenyan Electronics Deals Under 10,000 KES</h1>
+    
+    <div class="summary">
+        <p>Last updated: <span id="timestamp"></span></p>
+        <p>Total deals found: <span id="total-deals"></span></p>
+    </div>
+    
+    <div class="products" id="products-container">
+        <!-- Products will be inserted here by JavaScript -->
+    </div>
+
+    <script>
+        // Load the data from the JSON file
+        fetch('kenyan_electronics_deals.json')
+            .then(response => response.json())
+            .then(data => {
+                // Update summary information
+                document.getElementById('timestamp').textContent = new Date(data.timestamp).toLocaleString();
+                document.getElementById('total-deals').textContent = data.totalItems;
+                
+                // Display products
+                const container = document.getElementById('products-container');
+                
+                data.items.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product';
+                    
+                    productDiv.innerHTML = `
+                        <div class="category ${product.category}">${product.category.toUpperCase()}</div>
+                        <h3>${product.name}</h3>
+                        <div>
+                            <span class="price">KES ${product.currentPrice.toLocaleString()}</span>
+                            ${product.originalPrice && product.originalPrice > product.currentPrice ? 
+                              `<span class="original-price">KES ${product.originalPrice.toLocaleString()}</span>` : ''}
+                            ${product.discount ? `<span class="discount">${product.discount} off</span>` : ''}
+                        </div>
+                        <div class="shop">Shop: ${product.shop}</div>
+                        ${product.url ? `<a href="${product.url}" class="url" target="_blank">View Product</a>` : ''}
+                    `;
+                    
+                    container.appendChild(productDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('products-container').innerHTML = 
+                    '<p>Error loading deals data. Please check the JSON file.</p>';
+            });
+    </script>
+</body>
+</html>

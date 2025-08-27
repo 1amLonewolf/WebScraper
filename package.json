@@ -1,0 +1,28 @@
+{
+  "name": "kenyan-electronics-scraper",
+  "version": "1.0.0",
+  "description": "A web scraper for Kenyan online shops to find flash sales and offers for phones and laptops under 10,000 KES",
+  "main": "comprehensive_scraper.js",
+  "scripts": {
+    "scrape": "node comprehensive_scraper.js",
+    "view": "node view_report.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["scraper", "kenya", "electronics", "flash-sales", "jumia"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "open": "^10.2.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/kenyan-electronics-scraper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/kenyan-electronics-scraper/issues"
+  },
+  "homepage": "https://github.com/your-username/kenyan-electronics-scraper#readme"
+}
